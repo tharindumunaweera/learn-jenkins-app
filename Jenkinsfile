@@ -123,6 +123,7 @@ pipeline {
             }
         }
 
+        /*
         stage('Approval') {
             steps {
                 timeout(time: 15, unit: 'MINUTES') {
@@ -130,6 +131,8 @@ pipeline {
                 }
             }
         }
+
+        */
 
         stage('Deploy prod') {
             agent {
