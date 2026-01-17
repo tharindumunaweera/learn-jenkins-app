@@ -9,6 +9,25 @@ pipeline {
 
     stages {
 
+        stage('Build') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    ls -la
+                    node --version
+                    npm --version
+                    npm ci
+                    npm run build
+                    ls -la
+                '''
+            }
+        }
+
         stage('AWS') {
             agent {
                 docker {
@@ -27,25 +46,6 @@ pipeline {
                         aws s3 sync build s3://$AWS_S3_BUCKET
                     '''
                 }
-            }
-        }
-
-        stage('Build') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-            steps {
-                sh '''
-                    ls -la
-                    node --version
-                    npm --version
-                    npm ci
-                    npm run build
-                    ls -la
-                '''
             }
         }
 
